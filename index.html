@@ -6,18 +6,52 @@
     <title>Pablo's TODO</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <style>
+      :root {
+        --main-bg-color: #f6f6f6;
+        --default-padding: 10px;
+        --default-botton-margin: 10px;
+      }
+      body {
+        font-family: sans-serif;
+      }
+      .container {
+        width: 300px;
+      }
+      #todoForm {
+        background: #F6F6F6;
+        background: var(--main-bg-color);
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: var(--default-botton-margin);
+        padding: var(--default-padding);
+      }
+      #todoForm input[type='text'] {
+        width: 100%;
+      }
+      #todoList {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #todoList li {
+        background: var(--main-bg-color);
+        margin-bottom: var(--default-botton-margin);
+        padding: var(--default-padding);
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
   </head>
   <body>
-    <h1>Pablo's TODO</h1>
-    <h2>New todo</h2>
-    <form id="todoForm">
-      <input type="text" id="newTodoInput"/>
-      <button>Create</button>
-    </form>
-    <h2>List of TODOs</h2>
-    <ul id="todoList"></ul>
-
+    <div class="container">
+      <h1>Pablo's TODO</h1>
+      <form id="todoForm">
+        <input type="text" id="newTodoInput"/>
+        <button>Add</button>
+      </form>
+      <ul id="todoList"></ul>
+    </div>
     <script src="todo.js"></script>
   </body>
 </html>

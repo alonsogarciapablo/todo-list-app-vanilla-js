@@ -34,6 +34,7 @@ function fetchTodos() {
       state.todos = [
         { id: 1, task: 'Cook lunch' },
         { id: 2, task: 'Set the table' },  
+        { id: 3, task: 'Have lunch!' },  
       ];
       resolve();
     }, 500);
