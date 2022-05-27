@@ -7,13 +7,12 @@ console.log(todoFormEl, newTodoInputEl, todoListEl);
 
 const state = {
   newTodo: '',
-  todos: [
-    { id: 1, task: 'Cook lunch' },
-    { id: 2, task: 'Set the table' },
-  ],
+  todos: [],
 }
 
-function init() {
+async function init() {
+  await fetchTodos();
+  
   // Render the view based on state
   renderNewTodo();
   renderTodos();
@@ -26,6 +25,36 @@ function init() {
   newTodoInputEl.focus();
 }
 
+// "FETCHING" TODOS
+
+function fetchTodos() {
+  return new Promise(function(resolve) {
+    setTimeout(function () {
+      state.todos = [
+        { id: 1, task: 'Cook lunch' },
+        { id: 2, task: 'Set the table' },  
+      ];
+      resolve();
+    }, 500);
+  });
+}
+
+function createTodo(task) {
+  return {
+    id: nextTodoId(),
+    task: task,
+  }
+}
+
+function nextTodoId() {
+  if (state.todos.length === 0) {
+    return 1;
+  }
+
+  let todoIds = state.todos.map((todo) => todo.id);
+  return Math.max(...todoIds) + 1;
+}
+
 // RENDERING
 
 function renderNewTodo() {
@@ -36,11 +65,28 @@ function renderTodos() {
   todoListEl.innerHTML = '';
 
   state.todos.forEach((todo) => {
-    let todoItemEl = document.createElement('li');
-    todoItemEl.id = todo.id;
-    todoItemEl.innerHTML = todo.task;
-    todoListEl.appendChild(todoItemEl);
+    todoListEl.appendChild(createTodoListItemElement(todo));
   });
+}
+
+function createTodoListItemElement(todo) {
+  let todoListItemEl = document.createElement('li');
+  todoListItemEl.id = todo.id;
+  
+  let todoListItemText = document.createTextNode(todo.task);
+  todoListItemEl.appendChild(todoListItemText);
+  todoListItemEl.appendChild(createDeleteTodoButton(todo));
+  
+  return todoListItemEl;
+}
+
+function createDeleteTodoButton(todo) {
+  let deleteTodoEl = document.createElement('button');
+  deleteTodoEl.textContent = 'X';
+  deleteTodoEl.addEventListener('click', handleDeleteTodoClick);
+  deleteTodoEl.dataset['todoId'] = todo.id;
+  
+  return deleteTodoEl;
 }
 
 // EVENT HANDLING
@@ -52,14 +98,18 @@ function handleNewTodoInput(event) {
 function handleTodoFormSubmit(event) {
   event.preventDefault();
 
-  state.todos.push({
-    id: 3,
-    task: newTodoInputEl.value,
-  })
+  state.todos = [...state.todos, createTodo(newTodoInputEl.value)];
   state.newTodo = '';
 
   renderTodos();
   renderNewTodo();
+}
+
+function handleDeleteTodoClick(event) {
+  let todoId = event.target.dataset['todoId'];
+  state.todos = state.todos.filter(todo => todo.id != todoId);
+
+  renderTodos();
 }
 
 document.addEventListener('DOMContentLoaded', init, false);
