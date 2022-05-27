@@ -25,8 +25,9 @@ async function init() {
   newTodoInputEl.focus();
 }
 
-// "FETCHING" TODOS
+// FETCHING AND CREATING TODOS
 
+// Simulates an async fetch of todos (just for fun)
 function fetchTodos() {
   return new Promise(function(resolve) {
     setTimeout(function () {
@@ -62,8 +63,17 @@ function renderNewTodo() {
 }
 
 function renderTodos() {
-  todoListEl.innerHTML = '';
+  removeTodos();
+  appendTodos();
+}
 
+function removeTodos() {
+  while (todoListEl.firstElementChild) {
+    todoListEl.firstElementChild.remove();
+  }
+}
+
+function appendTodos() {
   state.todos.forEach((todo) => {
     todoListEl.appendChild(createTodoListItemElement(todo));
   });
