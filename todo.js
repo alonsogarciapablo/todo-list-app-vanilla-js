@@ -103,17 +103,19 @@ function createDeleteTodoButton(todo) {
 // EVENT HANDLING
 
 function handleNewTodoInput(event) {
-  state.newTodo = newTodoInputEl.value;
+  state.newTodo = newTodoInputEl.value.trim();
 }
 
 function handleTodoFormSubmit(event) {
   event.preventDefault();
 
-  state.todos = [...state.todos, createTodo(newTodoInputEl.value)];
-  state.newTodo = '';
-
-  renderTodos();
-  renderNewTodo();
+  if (state.newTodo !== '') {
+    state.todos = [...state.todos, createTodo(newTodoInputEl.value)];
+    state.newTodo = '';
+  
+    renderTodos();
+    renderNewTodo();    
+  }
 }
 
 function handleDeleteTodoClick(event) {
