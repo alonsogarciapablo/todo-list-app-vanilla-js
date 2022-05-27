@@ -17,7 +17,16 @@ function init() {
   // Render the view based on state
   renderNewTodo();
   renderTodos();
+
+  // Add event listeners
+  newTodoInputEl.addEventListener('input', handleNewTodoInput);
+  todoFormEl.addEventListener('submit', handleTodoFormSubmit);
+
+  // Focus on the input
+  newTodoInputEl.focus();
 }
+
+// RENDERING
 
 function renderNewTodo() {
   newTodoInputEl.value = state.newTodo;
@@ -32,6 +41,25 @@ function renderTodos() {
     todoItemEl.innerHTML = todo.task;
     todoListEl.appendChild(todoItemEl);
   });
+}
+
+// EVENT HANDLING
+
+function handleNewTodoInput(event) {
+  state.newTodo = newTodoInputEl.value;
+}
+
+function handleTodoFormSubmit(event) {
+  event.preventDefault();
+
+  state.todos.push({
+    id: 3,
+    task: newTodoInputEl.value,
+  })
+  state.newTodo = '';
+
+  renderTodos();
+  renderNewTodo();
 }
 
 document.addEventListener('DOMContentLoaded', init, false);
